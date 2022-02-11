@@ -35,40 +35,42 @@ class FlightReservationServiceTest {
 
     private FlightReservation flightReservation;
 
-    private Long hotelReservationId;
+    private Long flightReservationId;
 
     @BeforeEach
     void setup() {
-        hotelReservationId = 3L;
+        flightReservationId = 3L;
         flightReservation = new FlightReservation();
-        flightReservation.setId(hotelReservationId);
+        flightReservation.setId(flightReservationId);
     }
 
     @Test
     void makeReservationSavesHotelPassedIn() throws ParseException {
-        String hotelName = "Holiday Inn";
-        Long hotelId = 1L;
+        Long flightId = 1L;
         Long reservationId = 2L;
-        Flight hotel = new Flight();
-        hotel.setId(hotelId);
-        hotel.setFlightNumber(hotelName);
-        when(flightRepository.findByName(anyString())).thenReturn(Optional.of(hotel));
+        final String flightNumber = "880";
+        Flight flight = new Flight();
+        flight.setId(flightId);
+        flight.setArrivalCity("Boston");
+        flight.setDepartureCity("New York");
+        flight.setDepartureTime("1300");
+        flight.setFlightNumber(flightNumber);
+        when(flightRepository.findByFlightNumber(anyString())).thenReturn(Optional.of(flight));
         when (flightReservationRepository.save(any(FlightReservation.class))).thenReturn(flightReservation);
-        final int roomNumber = 666;
-        final Date checkinDate = new SimpleDateFormat("d MMM yyyy").parse("9 Feb 2022");
-        final Date checkoutDate = new SimpleDateFormat("dd MMM yyyy").parse("12 Feb 2022");
+        final String seatNumber = "1A";
+        final Date departureDate = new SimpleDateFormat("dd MMM yyyy").parse("12 Feb 2022");
         FlightReservationRequest request = FlightReservationRequest.builder()
                 .reservationId(reservationId)
-                .flight(hotel)
-                .flightNumber(roomNumber)
-                .seatNumber(checkinDate)
-                .departureDate(checkoutDate)
+                .flight(flight)
+                .flightNumber(flightNumber)
+                .seatNumber(seatNumber)
+                .departureDate(departureDate)
                 .build();
         FlightReservation actual = underTest.makeReservation(request);
-        verify(flightRepository, times(1)).findByName(hotelName);
+        verify(flightRepository, times(1)).findByFlightNumber(flightNumber);
         verify(flightReservationRepository, times(1)).save(any(FlightReservation.class));
         assertAll(() -> {
-            assertEquals(hotelReservationId, actual.getId());
+            assertEquals(flightReservationId, actual.getId());
         });
     }
 

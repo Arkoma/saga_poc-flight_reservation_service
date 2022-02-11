@@ -23,13 +23,12 @@ public class FlightReservationService {
     }
 
     public FlightReservation makeReservation(FlightReservationRequest request) throws NoSuchElementException{
-        Flight hotel = flightRepository.findByName(request.getFlight().getFlightNumber()).orElseThrow();
+        Flight hotel = flightRepository.findByFlightNumber(request.getFlight().getFlightNumber()).orElseThrow();
         FlightReservation flightReservation = new FlightReservation();
         flightReservation.setFlightId(hotel.getId());
         flightReservation.setReservationId(request.getReservationId());
-        flightReservation.setCheckinDate(request.getSeatNumber());
         flightReservation.setDepartureDate(request.getDepartureDate());
-        flightReservation.setSeatNumber(request.getFlightNumber());
+        flightReservation.setSeatNumber(request.getSeatNumber());
         try {
             flightReservation.setStatus(StatusEnum.RESERVED);
             flightReservation = flightReservationRepository.save(flightReservation);

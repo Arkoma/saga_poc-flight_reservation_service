@@ -59,8 +59,8 @@ class FlightReservationControllerIT {
     private FlightReservationRequest flightReservationRequest;
     private Flight hotel;
     private final Long reservationId = 1L;
-    private final int roomNumber = 666;
-    private final Date checkinDate = new SimpleDateFormat("d MMM yyyy").parse("9 Feb 2022");
+    private final String flightNumber = "801";
+    private final String seatNumber = "1A";
     private final Date checkoutDate = new SimpleDateFormat("dd MMM yyyy").parse("12 Feb 2022");
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -68,21 +68,21 @@ class FlightReservationControllerIT {
     void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
         hotel = new Flight();
-        hotel.setFlightNumber("Holiday Inn");
+        hotel.setFlightNumber("880");
         this.flightRepository.deleteAll();
         hotel = this.flightRepository.save(hotel);
         flightReservationRequest = FlightReservationRequest.builder()
                 .reservationId(reservationId)
                 .flight(hotel)
-                .flightNumber(roomNumber)
-                .seatNumber(checkinDate)
+                .flightNumber(flightNumber)
+                .seatNumber(seatNumber)
                 .departureDate(checkoutDate)
                 .build();
         this.flightReservationRepository.deleteAll();
     }
 
     @Test
-    void hotelReservationControllerExistsAsABean() {
+    void flightReservationControllerExistsAsABean() {
         assertTrue(webApplicationContext.containsBean("flightReservationController"));
     }
 
@@ -108,9 +108,8 @@ class FlightReservationControllerIT {
             assertEquals(StatusEnum.RESERVED, actualResponse.getStatus());
             assertEquals(hotel.getId(), actualResponse.getFlightId());
             assertEquals(this.reservationId, actualResponse.getReservationId());
-            assertEquals(this.checkinDate, actualResponse.getCheckinDate());
+            assertEquals(this.seatNumber, actualResponse.getSeatNumber());
             assertEquals(this.checkoutDate, actualResponse.getDepartureDate());
-            assertEquals(this.roomNumber, actualResponse.getSeatNumber());
                 }
         );
     }
@@ -136,9 +135,8 @@ class FlightReservationControllerIT {
             assertEquals(StatusEnum.RESERVED ,actualEntity.getStatus());
             assertEquals(hotel.getId(), actualEntity.getFlightId());
             assertEquals(this.reservationId, actualEntity.getReservationId());
-            assertEquals(this.checkinDate, actualEntity.getCheckinDate());
+            assertEquals(this.seatNumber, actualEntity.getSeatNumber());
             assertEquals(this.checkoutDate, actualEntity.getDepartureDate());
-            assertEquals(this.roomNumber, actualEntity.getSeatNumber());
                 }
         );
     }
@@ -185,9 +183,8 @@ class FlightReservationControllerIT {
                     assertEquals(StatusEnum.RESERVED ,foundReservation.getStatus());
                     assertEquals(this.hotel.getId(), foundReservation.getFlightId());
                     assertEquals(this.reservationId, foundReservation.getReservationId());
-                    assertEquals(this.checkinDate, foundReservation.getCheckinDate());
+                    assertEquals(this.seatNumber, foundReservation.getSeatNumber());
                     assertEquals(this.checkoutDate, foundReservation.getDepartureDate());
-                    assertEquals(this.roomNumber, foundReservation.getSeatNumber());
                 }
         );
     }
@@ -213,9 +210,8 @@ class FlightReservationControllerIT {
                     assertEquals(StatusEnum.RESERVED ,foundReservations.get(0).getStatus());
                     assertEquals(this.hotel.getId(), foundReservations.get(0).getFlightId());
                     assertEquals(this.reservationId, foundReservations.get(0).getReservationId());
-                    assertEquals(this.checkinDate, foundReservations.get(0).getCheckinDate());
+                    assertEquals(this.seatNumber, foundReservations.get(0).getSeatNumber());
                     assertEquals(this.checkoutDate, foundReservations.get(0).getDepartureDate());
-                    assertEquals(this.roomNumber, foundReservations.get(0).getSeatNumber());
                     assertEquals(2, foundReservations.size());
                 }
         );

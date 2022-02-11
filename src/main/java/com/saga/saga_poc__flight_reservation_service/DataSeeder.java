@@ -5,6 +5,12 @@ import com.saga.saga_poc__flight_reservation_service.repository.FlightRepository
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Component
 public class DataSeeder implements CommandLineRunner {
 
@@ -16,38 +22,36 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        loadHotelData();
+        loadFlightData();
     }
 
-    private void loadHotelData() {
+    private void loadFlightData() throws ParseException {
         if (flightRepository.count() == 0) {
-            Flight hotel1 = new Flight();
-            hotel1.setFlightNumber("Holiday Inn");
-            hotel1.setDepartureCity("42 McVernon st");
-            hotel1.setArrivalCity("Fort Worth");
-            hotel1.setState("TX");
-            hotel1.setZip("78702");
-            hotel1.setArrivalTimestamp("customerService@holidayInn.com");
-            hotel1.setDepartureTimestamp("555-555-1212");
-            Flight hotel2 = new Flight();
-            hotel2.setFlightNumber("Dallas Suites");
-            hotel2.setDepartureCity("33 Highland Park Ave");
-            hotel2.setArrivalCity("Dallas");
-            hotel2.setState("TX");
-            hotel2.setZip("78702");
-            hotel2.setArrivalTimestamp("customerService@DallasSuites.com");
-            hotel2.setDepartureTimestamp("555-555-1212");
-            Flight hotel3 = new Flight();
-            hotel3.setFlightNumber("Austin Comfort stays");
-            hotel3.setDepartureCity("83 Thomas Corner");
-            hotel3.setArrivalCity("Austin");
-            hotel3.setState("TX");
-            hotel3.setZip("78702");
-            hotel3.setArrivalTimestamp("customerService@asc.com");
-            hotel3.setDepartureTimestamp("555-555-1212");
-            System.out.println("saving hotel " + flightRepository.save(hotel1));
-            System.out.println("saving hotel " + flightRepository.save(hotel2));
-            System.out.println("saving hotel " + flightRepository.save(hotel3));
+            Flight flight1 = new Flight();
+            flight1.setFlightNumber("880");
+            flight1.setDepartureCity("Dallas");
+            flight1.setArrivalCity("Boston");
+            flight1.setArrivalTime("1300");
+            flight1.setDepartureTime("1700");
+
+            Flight flight2 = new Flight();
+            flight2.setFlightNumber("881");
+            flight2.setDepartureCity("New York");
+            flight2.setArrivalCity("Miami");
+            flight2.setArrivalTime("1400");
+            flight2.setDepartureTime("1800");
+
+            Flight flight3 = new Flight();
+            flight3.setFlightNumber("882");
+            flight3.setDepartureCity("Los Angeles");
+            flight3.setArrivalCity("Orlando");
+            flight3.setArrivalTime("1700");
+            flight3.setDepartureTime("2100");
+
+            System.out.println("saving flight " + flightRepository.save(flight1));
+            System.out.println("saving flight " + flightRepository.save(flight2));
+            System.out.println("saving flight " + flightRepository.save(flight3));
+
         }
     }
 }

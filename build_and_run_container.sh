@@ -10,4 +10,4 @@ docker tag hotel-reservation-server:"$version" aaronburk/hotel-reservation-serve
 
 docker push aaronburk/hotel-reservation-server:"$version"
 
-docker run -p8882:8082 hotel-reservation-server:"$version"
+docker run -p8884:8084 hotel-reservation-server:"$version"

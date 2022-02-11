@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'com.saga.saga_poc-hotel_reservation_service' is invalid and this project uses 'com.saga.saga_poc__flight_reservation_service' instead.
+* The original package name 'com.saga.saga_poc-flight_reservation_service' is invalid and this project uses 'com.saga.saga_poc__flight_reservation_service' instead.
 
 # Getting Started
 
