@@ -1,12 +1,17 @@
 package com.saga.saga_poc__flight_reservation_service.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 public class FlightReservation {
     @Id

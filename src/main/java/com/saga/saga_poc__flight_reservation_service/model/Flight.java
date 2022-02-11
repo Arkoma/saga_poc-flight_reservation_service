@@ -1,13 +1,18 @@
 package com.saga.saga_poc__flight_reservation_service.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 public class Flight {
     @Id
