@@ -1,4 +1,4 @@
-package com.saga.saga_pochotel_reservation_service.repository;
+package com.saga.saga_poc__flight_reservation_service.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +8,14 @@ import org.springframework.context.ApplicationContext;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class HotelReservationRepositoryIT {
+class FlightReservationRepositoryIT {
 
     @Autowired
     private ApplicationContext applicationContext;
 
     @Test
-    void testHotelReservationRepository() {
-        assertTrue(applicationContext.containsBean("hotelReservationRepository"));
+    void testFlightReservationRepository() {
+        assertTrue(applicationContext.containsBean("flightReservationRepository"));
     }
 
 }

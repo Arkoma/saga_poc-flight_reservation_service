@@ -1,4 +1,4 @@
-package com.saga.saga_pochotel_reservation_service.model;
+package com.saga.saga_poc__flight_reservation_service.model;
 
 import lombok.Data;
 
@@ -8,14 +8,13 @@ import java.util.Date;
 
 @Data
 @Entity
-public class HotelReservation {
+public class FlightReservation {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private Long reservationId;
     private StatusEnum status;
-    private Long hotelId;
-    private int room;
-    private Date checkinDate;
-    private Date checkoutDate;
+    private Long flightId;
+    private String seatNumber;
+    private Date departureDate;
 }

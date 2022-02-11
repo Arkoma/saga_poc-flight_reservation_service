@@ -1,1 +1,1 @@
-# saga_poc-hotel_reservation_service
+# saga_poc-flight_reservation_service
