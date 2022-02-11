@@ -45,7 +45,7 @@ class FlightReservationServiceTest {
     }
 
     @Test
-    void makeReservationSavesHotelPassedIn() throws ParseException {
+    void makeReservationSavesFlightPassedIn() throws ParseException {
         Long flightId = 1L;
         Long reservationId = 2L;
         final String flightNumber = "880";

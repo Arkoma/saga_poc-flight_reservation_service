@@ -26,18 +26,18 @@ class FlightReservationServiceIT {
     private FlightReservationRepository flightReservationRepository;
 
     @Test
-    void hotelReservationServiceBeanGetsCreated() {
+    void flightReservationServiceBeanGetsCreated() {
         assertTrue(applicationContext.containsBean("flightReservationService"));
     }
 
     @Test
-    void hotelReservationServiceContainsHotelRepository() {
+    void flightReservationServiceContainsFlightRepository() {
         FlightRepository injectedFlightRepository = (FlightRepository) ReflectionTestUtils.getField(underTest, "flightRepository");
         assertSame(flightRepository, injectedFlightRepository);
     }
 
     @Test
-    void hotelReservationServiceContainsHotelReservationRepository() {
+    void flightReservationServiceContainsFlightReservationRepository() {
         FlightReservationRepository injectedFlightReservationRepository =(FlightReservationRepository) ReflectionTestUtils.getField(underTest, "flightReservationRepository");
         assertSame(flightReservationRepository, injectedFlightReservationRepository);
     }

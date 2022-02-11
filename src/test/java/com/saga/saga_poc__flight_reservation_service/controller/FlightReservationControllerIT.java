@@ -57,7 +57,7 @@ class FlightReservationControllerIT {
 
     private MockMvc mockMvc;
     private FlightReservationRequest flightReservationRequest;
-    private Flight hotel;
+    private Flight flight;
     private final Long reservationId = 1L;
     private final String flightNumber = "801";
     private final String seatNumber = "1A";
@@ -67,13 +67,13 @@ class FlightReservationControllerIT {
     @BeforeEach
     void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-        hotel = new Flight();
-        hotel.setFlightNumber("880");
+        flight = new Flight();
+        flight.setFlightNumber("880");
         this.flightRepository.deleteAll();
-        hotel = this.flightRepository.save(hotel);
+        flight = this.flightRepository.save(flight);
         flightReservationRequest = FlightReservationRequest.builder()
                 .reservationId(reservationId)
-                .flight(hotel)
+                .flight(flight)
                 .flightNumber(flightNumber)
                 .seatNumber(seatNumber)
                 .departureDate(checkoutDate)
@@ -87,7 +87,7 @@ class FlightReservationControllerIT {
     }
 
     @Test
-    void hotelReservationServiceIsInjectedInTheController() {
+    void flightReservationServiceIsInjectedInTheController() {
         FlightReservationService injectedFlightReservationService =(FlightReservationService) ReflectionTestUtils.getField(underTest, "flightReservationService");
         assertSame(flightReservationService, injectedFlightReservationService);
     }
@@ -106,7 +106,7 @@ class FlightReservationControllerIT {
         FlightReservation actualResponse = mapper.readValue(responseJson, FlightReservation.class);
         assertAll(() -> {
             assertEquals(StatusEnum.RESERVED, actualResponse.getStatus());
-            assertEquals(hotel.getId(), actualResponse.getFlightId());
+            assertEquals(flight.getId(), actualResponse.getFlightId());
             assertEquals(this.reservationId, actualResponse.getReservationId());
             assertEquals(this.seatNumber, actualResponse.getSeatNumber());
             assertEquals(this.checkoutDate, actualResponse.getDepartureDate());
@@ -133,7 +133,7 @@ class FlightReservationControllerIT {
         FlightReservation actualEntity = this.flightReservationRepository.getById(actualResponse.getId());
         assertAll(() -> {
             assertEquals(StatusEnum.RESERVED ,actualEntity.getStatus());
-            assertEquals(hotel.getId(), actualEntity.getFlightId());
+            assertEquals(flight.getId(), actualEntity.getFlightId());
             assertEquals(this.reservationId, actualEntity.getReservationId());
             assertEquals(this.seatNumber, actualEntity.getSeatNumber());
             assertEquals(this.checkoutDate, actualEntity.getDepartureDate());
@@ -181,7 +181,7 @@ class FlightReservationControllerIT {
         FlightReservation foundReservation = mapper.readValue(foundResponseJson, FlightReservation.class);
         assertAll(() -> {
                     assertEquals(StatusEnum.RESERVED ,foundReservation.getStatus());
-                    assertEquals(this.hotel.getId(), foundReservation.getFlightId());
+                    assertEquals(this.flight.getId(), foundReservation.getFlightId());
                     assertEquals(this.reservationId, foundReservation.getReservationId());
                     assertEquals(this.seatNumber, foundReservation.getSeatNumber());
                     assertEquals(this.checkoutDate, foundReservation.getDepartureDate());
@@ -208,7 +208,7 @@ class FlightReservationControllerIT {
         List<FlightReservation> foundReservations = mapper.readValue(foundResponseJson, new TypeReference<List<FlightReservation>>(){});
         assertAll(() -> {
                     assertEquals(StatusEnum.RESERVED ,foundReservations.get(0).getStatus());
-                    assertEquals(this.hotel.getId(), foundReservations.get(0).getFlightId());
+                    assertEquals(this.flight.getId(), foundReservations.get(0).getFlightId());
                     assertEquals(this.reservationId, foundReservations.get(0).getReservationId());
                     assertEquals(this.seatNumber, foundReservations.get(0).getSeatNumber());
                     assertEquals(this.checkoutDate, foundReservations.get(0).getDepartureDate());
