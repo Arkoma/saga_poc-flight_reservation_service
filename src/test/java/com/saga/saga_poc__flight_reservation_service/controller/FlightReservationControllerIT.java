@@ -69,6 +69,10 @@ class FlightReservationControllerIT {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
         flight = new Flight();
         flight.setFlightNumber("880");
+        flight.setDepartureCity("Miami");
+        flight.setArrivalCity("Los Angeles");
+        flight.setArrivalTime("1300");
+        flight.setDepartureTime("0900");
         this.flightRepository.deleteAll();
         flight = this.flightRepository.save(flight);
         flightReservationRequest = FlightReservationRequest.builder()
