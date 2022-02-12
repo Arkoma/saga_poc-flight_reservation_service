@@ -209,7 +209,7 @@ class FlightReservationControllerIT {
                         content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         String foundResponseJson = foundResult.getResponse().getContentAsString();
-        List<FlightReservation> foundReservations = mapper.readValue(foundResponseJson, new TypeReference<List<FlightReservation>>(){});
+        List<FlightReservation> foundReservations = mapper.readValue(foundResponseJson, new TypeReference<>(){});
         assertAll(() -> {
                     assertEquals(StatusEnum.RESERVED ,foundReservations.get(0).getStatus());
                     assertEquals(this.flight.getId(), foundReservations.get(0).getFlightId());
