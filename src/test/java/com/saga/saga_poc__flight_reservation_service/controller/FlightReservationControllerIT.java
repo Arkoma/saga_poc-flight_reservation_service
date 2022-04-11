@@ -69,7 +69,7 @@ class FlightReservationControllerIT {
     void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
         flight = new Flight();
-        flight.setFlightNumber("880");
+        flight.setFlightNumber("801");
         flight.setDepartureCity("Miami");
         flight.setArrivalCity("Los Angeles");
         flight.setArrivalTime("1300");
@@ -78,7 +78,7 @@ class FlightReservationControllerIT {
         flight = this.flightRepository.save(flight);
         flightReservationRequest = FlightReservationRequest.builder()
                 .reservationId(reservationId)
-                .flight(flight)
+                .flightNumber(flight.getFlightNumber())
                 .flightNumber(flightNumber)
                 .seatNumber(seatNumber)
                 .departureDate(departureDate)

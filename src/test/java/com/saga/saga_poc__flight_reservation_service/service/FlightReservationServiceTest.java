@@ -68,7 +68,6 @@ class FlightReservationServiceTest {
         final Date returnDate = new SimpleDateFormat("dd MMM yyyy").parse("19 Feb 2022");
         FlightReservationRequest request = FlightReservationRequest.builder()
                 .reservationId(reservationId)
-                .flight(flight)
                 .flightNumber(flightNumber)
                 .seatNumber(seatNumber)
                 .departureDate(departureDate)
@@ -118,7 +117,6 @@ class FlightReservationServiceTest {
         final Date returnDate = new SimpleDateFormat("dd MMM yyyy").parse("19 Feb 2022");
         FlightReservationRequest request = FlightReservationRequest.builder()
                 .reservationId(reservationId)
-                .flight(flight)
                 .flightNumber(flightNumber)
                 .seatNumber(seatNumber)
                 .departureDate(departureDate)
@@ -150,7 +148,6 @@ class FlightReservationServiceTest {
         final Date returnDate = new SimpleDateFormat("dd MMM yyyy").parse("19 Feb 2022");
         FlightReservationRequest request = FlightReservationRequest.builder()
                 .reservationId(reservationId)
-                .flight(flight)
                 .flightNumber(flightNumber)
                 .seatNumber(seatNumber)
                 .departureDate(departureDate)

@@ -8,7 +8,6 @@ import java.util.Date;
 @Data
 @Builder
 public class FlightReservationRequest {
-    private Flight flight;
     private Long reservationId;
     private String flightNumber;
     private String seatNumber;

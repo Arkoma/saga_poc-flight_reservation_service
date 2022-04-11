@@ -26,7 +26,7 @@ public class FlightReservationService {
     public FlightReservation makeReservation(FlightReservationRequest request) throws NoSuchElementException{
         FlightReservation foundReservation = flightReservationRepository.findByReservationId(request.getReservationId());
         if (foundReservation != null) return foundReservation;
-        Optional<Flight> optionalFlight = flightRepository.findByFlightNumber(request.getFlight().getFlightNumber());
+        Optional<Flight> optionalFlight = flightRepository.findByFlightNumber(request.getFlightNumber());
         Flight flight = new Flight();
         if (optionalFlight.isPresent()) flight = optionalFlight.get();
         FlightReservation flightReservation = new FlightReservation();
