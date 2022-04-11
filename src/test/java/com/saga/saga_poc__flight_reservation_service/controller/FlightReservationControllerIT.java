@@ -61,7 +61,8 @@ class FlightReservationControllerIT {
     private final Long reservationId = 1L;
     private final String flightNumber = "801";
     private final String seatNumber = "1A";
-    private final Date checkoutDate = new SimpleDateFormat("dd MMM yyyy").parse("12 Feb 2022");
+    private final Date departureDate = new SimpleDateFormat("dd MMM yyyy").parse("12 Feb 2022");
+    private final Date returnDate = new SimpleDateFormat("dd MMM yyyy").parse("19 Feb 2022");
     private final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
@@ -80,7 +81,8 @@ class FlightReservationControllerIT {
                 .flight(flight)
                 .flightNumber(flightNumber)
                 .seatNumber(seatNumber)
-                .departureDate(checkoutDate)
+                .departureDate(departureDate)
+                .returnDate(returnDate)
                 .build();
         this.flightReservationRepository.deleteAll();
     }
@@ -105,20 +107,22 @@ class FlightReservationControllerIT {
 
     @Test
     void makeReservationEndpointReturnsReservation() throws Exception {
-        final MvcResult result = this.makeReservation();
+        final MvcResult result = this.makeReservation(this.flightReservationRequest.getReservationId());
         String responseJson = result.getResponse().getContentAsString();
         FlightReservation actualResponse = mapper.readValue(responseJson, FlightReservation.class);
         assertAll(() -> {
             assertEquals(StatusEnum.RESERVED, actualResponse.getStatus());
             assertEquals(flight.getId(), actualResponse.getFlightId());
             assertEquals(this.reservationId, actualResponse.getReservationId());
+            assertEquals(this.flightNumber, actualResponse.getFlightNumber());
             assertEquals(this.seatNumber, actualResponse.getSeatNumber());
-            assertEquals(this.checkoutDate, actualResponse.getDepartureDate());
+            assertEquals(this.departureDate, actualResponse.getDepartureDate());
                 }
         );
     }
 
-    private MvcResult makeReservation() throws Exception {
+    private MvcResult makeReservation(Long reservationId) throws Exception {
+        this.flightReservationRequest.setReservationId(reservationId);
         String json = mapper.writeValueAsString(this.flightReservationRequest);
         return this.mockMvc.perform(post("/reservation").contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpectAll(
@@ -131,7 +135,7 @@ class FlightReservationControllerIT {
     @Test
     @Transactional
     void makeReservationEndpointSavesReservation() throws Exception {
-        final MvcResult result = this.makeReservation();
+        final MvcResult result = this.makeReservation(this.flightReservationRequest.getReservationId());
         String responseJson = result.getResponse().getContentAsString();
         FlightReservation actualResponse = mapper.readValue(responseJson, FlightReservation.class);
         FlightReservation actualEntity = this.flightReservationRepository.getById(actualResponse.getId());
@@ -139,15 +143,17 @@ class FlightReservationControllerIT {
             assertEquals(StatusEnum.RESERVED ,actualEntity.getStatus());
             assertEquals(flight.getId(), actualEntity.getFlightId());
             assertEquals(this.reservationId, actualEntity.getReservationId());
+            assertEquals(this.flightNumber, actualResponse.getFlightNumber());
             assertEquals(this.seatNumber, actualEntity.getSeatNumber());
-            assertEquals(this.checkoutDate, actualEntity.getDepartureDate());
+            assertEquals(this.departureDate, actualEntity.getDepartureDate());
+            assertEquals(this.returnDate, actualEntity.getReturnDate());
                 }
         );
     }
 
     @Test
     void cancelReservationEndpointExists() throws Exception {
-        final MvcResult result = this.makeReservation();
+        final MvcResult result = this.makeReservation(this.flightReservationRequest.getReservationId());
         String responseJson = result.getResponse().getContentAsString();
         FlightReservation reservation = mapper.readValue(responseJson, FlightReservation.class);
         Long id = reservation.getId();
@@ -158,7 +164,7 @@ class FlightReservationControllerIT {
     @Test
     @Transactional
     void cancelReservationEndpointRemovesReservation() throws Exception {
-        final MvcResult result = this.makeReservation();
+        final MvcResult result = this.makeReservation(this.flightReservationRequest.getReservationId());
         String responseJson = result.getResponse().getContentAsString();
         FlightReservation reservation = mapper.readValue(responseJson, FlightReservation.class);
         Long id = reservation.getId();
@@ -172,7 +178,7 @@ class FlightReservationControllerIT {
     
     @Test
     void getReservationEndpointExists() throws Exception {
-        final MvcResult result = this.makeReservation();
+        final MvcResult result = this.makeReservation(this.flightReservationRequest.getReservationId());
         String responseJson = result.getResponse().getContentAsString();
         FlightReservation reservation = mapper.readValue(responseJson, FlightReservation.class);
         Long id = reservation.getId();
@@ -187,8 +193,10 @@ class FlightReservationControllerIT {
                     assertEquals(StatusEnum.RESERVED ,foundReservation.getStatus());
                     assertEquals(this.flight.getId(), foundReservation.getFlightId());
                     assertEquals(this.reservationId, foundReservation.getReservationId());
+                    assertEquals(this.flightNumber, foundReservation.getFlightNumber());
                     assertEquals(this.seatNumber, foundReservation.getSeatNumber());
-                    assertEquals(this.checkoutDate, foundReservation.getDepartureDate());
+                    assertEquals(this.departureDate, foundReservation.getDepartureDate());
+                    assertEquals(this.returnDate, foundReservation.getReturnDate());
                 }
         );
     }
@@ -201,8 +209,9 @@ class FlightReservationControllerIT {
 
     @Test
     void testGetAll() throws Exception {
-        this.makeReservation();
-        this.makeReservation();
+        this.makeReservation(this.flightReservationRequest.getReservationId());
+        final Long newReservationId = 456L;
+        this.makeReservation(newReservationId);
         final MvcResult foundResult = this.mockMvc.perform(get("/reservations"))
                 .andExpectAll(
                         status().isOk(),
@@ -214,8 +223,10 @@ class FlightReservationControllerIT {
                     assertEquals(StatusEnum.RESERVED ,foundReservations.get(0).getStatus());
                     assertEquals(this.flight.getId(), foundReservations.get(0).getFlightId());
                     assertEquals(this.reservationId, foundReservations.get(0).getReservationId());
+                    assertEquals(this.flightNumber, foundReservations.get(0).getFlightNumber());
                     assertEquals(this.seatNumber, foundReservations.get(0).getSeatNumber());
-                    assertEquals(this.checkoutDate, foundReservations.get(0).getDepartureDate());
+                    assertEquals(this.departureDate, foundReservations.get(0).getDepartureDate());
+                    assertEquals(this.returnDate, foundReservations.get(0).getReturnDate());
                     assertEquals(2, foundReservations.size());
                 }
         );

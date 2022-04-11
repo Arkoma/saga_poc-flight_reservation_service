@@ -69,9 +69,7 @@ class FlightReservationServiceTest {
         FlightReservation actual = underTest.makeReservation(request);
         verify(flightRepository, times(1)).findByFlightNumber(flightNumber);
         verify(flightReservationRepository, times(1)).save(any(FlightReservation.class));
-        assertAll(() -> {
-            assertEquals(flightReservationId, actual.getId());
-        });
+        assertAll(() -> assertEquals(flightReservationId, actual.getId()));
     }
 
     @Test

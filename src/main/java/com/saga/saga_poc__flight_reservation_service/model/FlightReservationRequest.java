@@ -13,4 +13,5 @@ public class FlightReservationRequest {
     private String flightNumber;
     private String seatNumber;
     private Date departureDate;
+    private Date returnDate;
 }
