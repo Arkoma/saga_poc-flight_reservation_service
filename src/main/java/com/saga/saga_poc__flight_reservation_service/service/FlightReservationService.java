@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class FlightReservationService {
@@ -23,16 +24,20 @@ public class FlightReservationService {
     }
 
     public FlightReservation makeReservation(FlightReservationRequest request) throws NoSuchElementException{
-        Flight flight = flightRepository.findByFlightNumber(request.getFlight().getFlightNumber()).orElseThrow();
+        FlightReservation foundReservation = flightReservationRepository.findByReservationId(request.getReservationId());
+        if (foundReservation != null) return foundReservation;
+        Optional<Flight> optionalFlight = flightRepository.findByFlightNumber(request.getFlight().getFlightNumber());
+        Flight flight = new Flight();
+        if (optionalFlight.isPresent()) flight = optionalFlight.get();
         FlightReservation flightReservation = new FlightReservation();
         flightReservation.setReservationId(request.getReservationId());
-        flightReservation.setFlightId(flight.getId());
+        flightReservation.setFlightId(flight.getId() == null ? 0L : flight.getId());
         flightReservation.setFlightNumber(request.getFlightNumber());
         flightReservation.setSeatNumber(request.getSeatNumber());
         flightReservation.setDepartureDate(request.getDepartureDate());
         flightReservation.setReturnDate(request.getReturnDate());
         try {
-            flightReservation.setStatus(StatusEnum.RESERVED);
+            flightReservation.setStatus(flightReservation.getFlightId() == 0L ? StatusEnum.CANCELLED : StatusEnum.RESERVED);
             flightReservation = flightReservationRepository.save(flightReservation);
         } catch (Exception e) {
             flightReservation.setStatus(StatusEnum.CANCELLED);
